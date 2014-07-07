@@ -1,0 +1,13 @@
+{
+	"server":"irc.friend-chat.jp:6664",
+	"jis_encode": true,
+	"user":"_meshi_bot@binzume",
+	"nick":"_meshi_bot",
+	"default_rooms": ["#binzume.test"],
+	"builtin_meshi_words": ["^めし","飯","^meshi", "ごはん"],
+	"hungry_words": ["腹減った","おなか減った"],
+	"kwsk_words": ["詳しく", "kwsk", "くわしく", "詳細"],
+	"invite_words": ["飯", "行きたい"],
+	"effective_seconds": 60
+}
+

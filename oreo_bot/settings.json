@@ -1,0 +1,7 @@
+{
+	"server":"irc.friend-chat.jp:6664",
+	"jis_encode": true,
+	"user":"_oreo_bot@binzume",
+	"nick":"_oreo_bot",
+	"channels": ["#binzume.test"]
+}

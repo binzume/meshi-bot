@@ -11,7 +11,9 @@ import (
     "container/heap"
     "encoding/json"
     "io/ioutil"
-    // hg clone https://code.google.com/p/go.text/
+    // hg clone https://code.google.com/p/go.text/ or
+    // go get code.google.com/p/go.text/encoding
+    // go get code.google.com/p/go.text/encoding/japanese
     "code.google.com/p/go.text/encoding/japanese"
     "code.google.com/p/go.text/transform"
     // go get github.com/thoj/go-ircevent
@@ -70,14 +72,13 @@ func (h *MeshiEvents) Pop() interface{} {
 
 
 func main() {
-    configFile, _ := os.Open("bot.json")
+    configFile, _ := os.Open("settings.json")
     jsonParser := json.NewDecoder(configFile)
 
     if err := jsonParser.Decode(&settings); err != nil {
-        fmt.Println("parsing config file", err.Error())
+        log.Println("failed: load config.", err.Error())
     }
     configFile.Close()
-    roomName := settings.RoomNames[0]
 
     // init strage
     m := &MeshiEvents{}
@@ -88,12 +89,20 @@ func main() {
     con := irc.IRC(settings.NickName, settings.UserName)
     err := con.Connect(settings.Server)
     if err != nil {
-        fmt.Println("Failed connecting")
+        log.Println("failed: connect irc")
         return
     }
 
     con.AddCallback("001", func (e *irc.Event) {
-        con.Join(roomName)
+        for _, ch := range settings.RoomNames {
+            con.Join(ch)
+        }
+    })
+
+    // auto join
+    con.AddCallback("INVITE", func (e *irc.Event) {
+        //log.Println("invited " + e.Arguments[0] + "," + e.Arguments[1])
+        con.Join(e.Arguments[1])
     })
 
     con.AddCallback("JOIN", func (e *irc.Event) {
@@ -106,12 +115,6 @@ func main() {
             log.Println("KICKED " + strings.Join(e.Arguments, " "))
             delete(channels, e.Arguments[0])
         }
-    })
-
-    // auto join
-    con.AddCallback("INVITE", func (e *irc.Event) {
-        //log.Println("invited " + e.Arguments[0] + "," + e.Arguments[1])
-        con.Join(e.Arguments[1])
     })
 
     var lastMeshiCount = 0

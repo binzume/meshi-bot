@@ -7,11 +7,10 @@ https://twitter.com/hashtag/%E3%83%89%E3%83%AF%E3%83%B3%E3%82%B4%E3%83%8F%E3%83%
 使い方
 ========
 
-> vi settings.json
+vi settings.json  
 
-> go get github.com/thoj/go-ircevent
-> go get code.google.com/p/go.text/encoding
-> go get code.google.com/p/go.text/encoding/japanese
+go get github.com/thoj/go-ircevent  
+go get code.google.com/p/go.text/encoding  
+go get code.google.com/p/go.text/encoding/japanese  
 
-> go run meshi_bot.go
-
+go run meshi_bot.go  
